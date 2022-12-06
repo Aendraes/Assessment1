@@ -42,7 +42,11 @@ def pslist():
 # 3.9 STRETCH TASK! Continue and add a function to add a new item using 
 # contacts, contact_type, and contact_category. Add new command to 
 
-# I made a mistake in 3.6. I will just copy the function and reduce it (Since it's the solution to 3.9) to fit 3.6
+# I made a mistake in 3.6. I will just copy the function and reduce it (Since it's almost the solution to 3.9) to fit 3.6
+# My guess is that 3.9 expects a function that takes in type, category and contact info but nothing else?
+# My function adds a contact with full info already.
+# Since it is a 'Stretch' Task I'll leave it as it is because I need a break.
+
 def addcontacttype(contact_type):
     connection=psconnect()
     cursor=connection.cursor()
@@ -149,7 +153,7 @@ if __name__ == '__main__':
         if command.upper() == 'QUIT':
             quit()
 
-            #Insert items
+            # Insert items
         elif command.upper() == 'INSERT':
             first_name = input("Insert first name please\n")
             last_name = input("Insert last name please\n")

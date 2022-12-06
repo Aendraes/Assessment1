@@ -8,7 +8,7 @@ def psconnect():
     params = {
         'dbname': 'assessmentcontacts',
         'user': 'postgres',
-        'password': '',
+        'password': 'Magnus725!',
         'host': 'localhost',
         'port': 5432
         }
@@ -18,6 +18,8 @@ def psconnect():
 
 # 3.4 Create a function that can fetch data from the database and print it to the 
 # console. Commit to remote repo. 
+# Can obviously make this more advanced and present the information prettier.
+# But The assignment doesn't ask for that and I'm conserving time.
 def pslist():
     query = """
     SELECT * FROM view_contacts

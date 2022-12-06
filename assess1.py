@@ -8,7 +8,7 @@ def psconnect():
     params = {
         'dbname': 'assessmentcontacts',
         'user': 'postgres',
-        'password': 'Magnus725!',
+        'password': '',
         'host': 'localhost',
         'port': 5432
         }
@@ -73,6 +73,21 @@ def insertcontact(first_name, last_name, title, organization, contact_type, cont
 
 # 3.7 Create a function that deletes a contact from the contacts table. Commit to 
 # remote repo. 
+def psdelete(first_name, last_name):
+    connection = psconnect()
+    cursor = connection.cursor()
+    selectquery = f"""
+    SELECT id from contacts where first_name = '{first_name}' AND last_name = '{last_name}';"""
+    cursor.execute(selectquery)
+    contact_id = cursor.fetchone()[0]
+    deletequery = f"""
+    DELETE FROM items where contact_id = {contact_id};
+    DELETE FROM contacts where id = {contact_id}"""
+    cursor.execute(deletequery)
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return True
 
 
 if __name__ == '__main__':
@@ -94,11 +109,20 @@ if __name__ == '__main__':
             contact_type = input("Insert contact type please (Email, Phone, Skype, Instagram\n")
             contact = input("Insert contact information please\n")
             contact_category = input("Insert contact category please. (Home, Work, Fax)\n")
-            if insertcontact(first_name, last_name, title, organization, contact_type, contact, contact_category):
+            try:
+                insertcontact(first_name, last_name, title, organization, contact_type, contact, contact_category)
                 print(f"Contact with name {first_name} inserted successfully!")
-            else:
+            except:
                 print("Error inserting contact.")
         elif command.upper() == 'LIST':
             pslist()
-            
+
+        elif command.upper() == 'DELETE':
+            first_name = input("Enter first name: \n")
+            last_name = input("Enter last name: \n")
+            try:
+                psdelete(first_name,last_name)
+                print(f"Delete successful!- {first_name} removed from database.")
+            except:
+                print("Delete not successful!")
             

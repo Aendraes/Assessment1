@@ -8,7 +8,7 @@ def psconnect():
     params = {
         'dbname': 'assessmentcontacts',
         'user': 'postgres',
-        'password': 'Magnus725!',
+        'password': '',
         'host': 'localhost',
         'port': 5432
         }
@@ -63,8 +63,24 @@ def addcategory(category):
     connection.close()
     return True
 
+# Real function for 3.6
 
-def insertcontact(first_name, last_name, title, organization, contact_type, contact, contact_category):
+def insertcontact(first_name, last_name, title, organization):
+    connection = psconnect()
+    cursor = connection.cursor()
+    insert_contacts = f"""
+    INSERT INTO contacts (first_name, last_name, title, organization) VALUES
+    ('{first_name}', '{last_name}','{title}','{organization}');
+    """
+    cursor.execute(insert_contacts)
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return True
+
+
+# My first attempt doing too much.
+def insertcontact2(first_name, last_name, title, organization, contact_type, contact, contact_category):
     connection = psconnect()
     cursor = connection.cursor()
     insert_contacts = f"""
@@ -125,7 +141,7 @@ if __name__ == '__main__':
 #     3.5 Add a loop that makes the program ask for input. The input is a command to 
 #         select between different functions. Commands could be: LIST, INSERT, 
 #         DELETE. Commit to remote repo. 
-    print("Available commands: LIST, INSERT, DELETE, QUIT, ADDTYPE, ADDCATEGORY")
+    print("Available commands: LIST, INSERT,INSERT2(Full insert), DELETE, QUIT, ADDTYPE, ADDCATEGORY")
     while True:
         
         command = input("Please enter a command: ")
@@ -139,14 +155,27 @@ if __name__ == '__main__':
             last_name = input("Insert last name please\n")
             title = input("Insert title please\n")
             organization = input("Insert organization please\n")
+            try:
+                insertcontact(first_name, last_name, title, organization)
+                print(f"Contact with name {first_name} inserted successfully!")
+            except:
+                print("Error inserting contact.")
+
+                #Insert 2 
+        elif command.upper() == 'INSERT2':
+            first_name = input("Insert first name please\n")
+            last_name = input("Insert last name please\n")
+            title = input("Insert title please\n")
+            organization = input("Insert organization please\n")
             contact_type = input("Insert contact type please (Email, Phone, Skype, Instagram\n")
             contact = input("Insert contact information please\n")
             contact_category = input("Insert contact category please. (Home, Work, Fax)\n")
             try:
-                insertcontact(first_name, last_name, title, organization, contact_type, contact, contact_category)
+                insertcontact2(first_name, last_name, title, organization, contact_type, contact, contact_category)
                 print(f"Contact with name {first_name} inserted successfully!")
             except:
                 print("Error inserting contact.")
+
 
                 # List items
         elif command.upper() == 'LIST':

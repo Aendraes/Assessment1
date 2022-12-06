@@ -35,6 +35,35 @@ def pslist():
     return None
 # 3.6 Create a function that inserts a new contact into the contacts table. Commit 
 # to remote repo. 
+# STRETCH TASKS 
+# If you have finished all the tasks and handed in to Canvas, you can try the following: 
+# 3.8 STRETCH TASK! Add functions to the program in Task 3 that can add contact 
+# type and category as well. Create new Commands to make this work. 
+# 3.9 STRETCH TASK! Continue and add a function to add a new item using 
+# contacts, contact_type, and contact_category. Add new command to 
+
+# I made a mistake in 3.6. I will just copy the function and reduce it (Since it's the solution to 3.9) to fit 3.6
+def addcontacttype(contact_type):
+    connection=psconnect()
+    cursor=connection.cursor()
+    query = f"INSERT INTO CONTACT_TYPES (contact_type) VALUES ('{contact_type}')"
+    cursor.execute(query)
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return True
+
+def addcategory(category):
+    connection=psconnect()
+    cursor=connection.cursor()
+    query = f"INSERT INTO contact_categories (contact_category) VALUES ('{category}')"
+    cursor.execute(query)
+    connection.commit()
+    cursor.close()
+    connection.close()
+    return True
+
+
 def insertcontact(first_name, last_name, title, organization, contact_type, contact, contact_category):
     connection = psconnect()
     cursor = connection.cursor()
@@ -96,13 +125,15 @@ if __name__ == '__main__':
 #     3.5 Add a loop that makes the program ask for input. The input is a command to 
 #         select between different functions. Commands could be: LIST, INSERT, 
 #         DELETE. Commit to remote repo. 
-    print("Available commands: LIST, INSERT, DELETE, QUIT")
+    print("Available commands: LIST, INSERT, DELETE, QUIT, ADDTYPE, ADDCATEGORY")
     while True:
         
         command = input("Please enter a command: ")
-
+            # Quit the program
         if command.upper() == 'QUIT':
-            break
+            quit()
+
+            #Insert items
         elif command.upper() == 'INSERT':
             first_name = input("Insert first name please\n")
             last_name = input("Insert last name please\n")
@@ -116,9 +147,11 @@ if __name__ == '__main__':
                 print(f"Contact with name {first_name} inserted successfully!")
             except:
                 print("Error inserting contact.")
+
+                # List items
         elif command.upper() == 'LIST':
             pslist()
-
+                #Delete
         elif command.upper() == 'DELETE':
             first_name = input("Enter first name: \n")
             last_name = input("Enter last name: \n")
@@ -127,4 +160,21 @@ if __name__ == '__main__':
                 print(f"Delete successful!- {first_name} removed from database.")
             except:
                 print("Delete not successful!")
-            
+                # Add Type
+        elif command.upper() == 'ADDTYPE':
+            contact_type = input("Enter type to insert: ")
+            try:
+                addcontacttype(contact_type)
+                print("Added a new type",contact_type)
+            except:
+                print("Failed to add type")
+
+                # Category
+        elif command.upper() == 'ADDCATEGORY':
+            category = input("Add new category: ")
+            try:
+                addcategory(category)
+                print("Added new category, ", category)
+            except:
+                print("Failed to add category", category)
+        

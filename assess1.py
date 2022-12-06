@@ -28,8 +28,16 @@ def pslist(query):
 
     return None
 
+
+
 if __name__ == '__main__':
-    query = """
-    SELECT * FROM CONTACTS;
-    """
-    pslist(query)
+#     3.5 Add a loop that makes the program ask for input. The input is a command to 
+#         select between different functions. Commands could be: LIST, INSERT, 
+#         DELETE. Commit to remote repo. 
+    print("Available commands: LIST, INSERT, DELETE, QUIT")
+    while True:
+        
+        command = input("Please enter a command: ")
+
+        if command == 'QUIT':
+            break
